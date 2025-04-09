@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>ChatGPT Bot</title>
+</head>
+<body>
+  <h2>Chat with GPT</h2>
+  <input id="userInput" placeholder="Type your message" />
+  <button onclick="sendMessage()">Send</button>
+  <div id="responseBox"></div>
+
+  <script>
+    async function sendMessage() {
+      const message = document.getElementById("userInput").value;
+      const responseBox = document.getElementById("responseBox");
+
+      responseBox.innerHTML += `<p><strong>You:</strong> ${message}</p>`;
+
+      const res = await fetch("http://localhost:3000/api/chat", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ message }),
+      });
+
+      const data = await res.json();
+      responseBox.innerHTML += `<p><strong>Bot:</strong> ${data.reply}</p>`;
+      document.getElementById("userInput").value = ""; // clear input
+    }
+  </script>
+</body>
+</html>
